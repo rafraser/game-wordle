@@ -1,8 +1,8 @@
 <template>
     <div class="w-4/5 relative">
-        <div v-if="visible" class="absolute top-auto z-50 w-full mb-2 overflow-y-auto text-lg bg-white rounded bottom-full max-h-36">
+        <div id="autocomplete-items-list" v-if="visible" class="absolute top-auto z-50 w-full mb-2 overflow-y-auto text-lg bg-white rounded bottom-full max-h-36">
             <div
-                v-for="(item, index) in filteredItems" :key="item.index" class="autocomplete-list-item"
+                v-for="(item, index) in filteredItems" :key="item.index" class="overflow-x-clip"
                 :class="{ 'bg-gray-200': currentSelectionIndex == index }"
                 @mousedown.prevent @click="select(item)" @mouseenter="currentSelectionIndex = index"
             >
@@ -59,27 +59,41 @@ export default defineComponent({
     },
 
     onArrowDown() {
-      if (this.visible && this.filteredItems.length - 1) {
+      if (this.visible && this.currentSelectionIndex < this.filteredItems.length - 1) {
         this.currentSelectionIndex += 1;
       }
+      this.scrollSelection();
     },
 
     onArrowUp() {
       if (this.visible && this.currentSelectionIndex > 0) {
         this.currentSelectionIndex -= 1;
       }
+      this.scrollSelection();
     },
 
     selectCurrent() {
-      if (this.currentSelectionIndex >= 0 && this.currentSelectionIndex < this.filteredItems.length) {
-        this.input = this.filteredItems[this.currentSelectionIndex];
-      } else if (!this.visible) {
+      if (this.filteredItems.length === 1 || this.input === this.filteredItems[this.currentSelectionIndex]) {
         this.guess();
+      } else if (this.currentSelectionIndex >= 0 && this.currentSelectionIndex < this.filteredItems.length) {
+        this.input = this.filteredItems[this.currentSelectionIndex];
       }
     },
 
+    scrollSelection() {
+      setTimeout(() => {
+        const list = document.getElementById('autocomplete-items-list');
+        if (!list) return;
+
+        const active = document.querySelector('#autocomplete-items-list .bg-gray-200');
+        if (!active) return;
+        if (active instanceof HTMLElement) {
+          list.scrollTop = active.offsetTop;
+        }
+      }, 0);
+    },
+
     guess() {
-      if (this.visible) return;
       if (!this.input || this.input.length < 1) return;
       if (gameOver()) return;
       if (!this.items.includes(this.input)) return;
@@ -91,11 +105,11 @@ export default defineComponent({
 
   computed: {
     visible(): boolean {
-      return this.isFocused && this.input.length > 0 && this.filteredItems.length > 1;
+      return this.isFocused && this.input.length > 0 && this.filteredItems.length >= 1;
     },
 
     filteredItems(): string[] {
-      return this.items.filter((item) => item.includes(this.input));
+      return this.items.filter((item) => item.toLowerCase().includes(this.input.toLowerCase()));
     },
   },
 });
