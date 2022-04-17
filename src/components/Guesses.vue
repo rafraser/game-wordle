@@ -7,8 +7,7 @@
     </div>
 
     <div v-else class="flex w-full">
-        <input type="text" class="w-4/5 outline-none rounded p-2 h-10" @keyup.enter="guess" v-model="guessInput" placeholder="Guess the game!">
-        <button class="w-1/5 bg-green-500 hover:bg-green-700 ml-2 rounded text-white" @click="guess">Guess</button>
+      <GuessTypeahead/>
     </div>
 
     <div class="my-2 text-white text-center">
@@ -19,27 +18,21 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import GuessTypeahead from './GuessTypeahead.vue';
 import { getGameNumber } from '../games';
-import {
-  makeGuess, gameOver, hasWon, store,
-} from '../store';
+import { gameOver, hasWon, store } from '../store';
 
 export default defineComponent({
   name: 'Guesses',
+  components: {
+    GuessTypeahead,
+  },
 
   data() {
     return { guessInput: '', shareText: 'Share!' };
   },
 
   methods: {
-    guess() {
-      if (this.guessInput.length < 1) return;
-      if (gameOver()) return;
-
-      makeGuess(this.guessInput);
-      this.guessInput = '';
-    },
-
     async share() {
       let result = `Gamele #${getGameNumber()} - ${hasWon() ? this.guesses.length : 'X'}/6\n`;
       result += `🎮 ${this.guessEmoji}\n\n`;
