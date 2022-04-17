@@ -1,2 +1,3 @@
 # game-wordle
- Guess the video game from just a few screenshots!
+
+Guess the video game from just a few screenshots!
