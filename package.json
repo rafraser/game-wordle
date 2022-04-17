@@ -1,0 +1,37 @@
+{
+  "name": "game-wordle",
+  "version": "1.0.0",
+  "description": "Guess the video game from just a few screenshots!",
+  "scripts": {
+    "build": "webpack --mode=production",
+    "dev": "webpack --mode=development --watch"
+  },
+  "author": "Robert A Fraser",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.26.1",
+    "vue": "^3.2.33",
+    "vue-router": "^4.0.14"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/parser": "^5.19.0",
+    "@vue/compiler-sfc": "^3.2.33",
+    "autoprefixer": "^10.4.4",
+    "css-loader": "^6.7.1",
+    "eslint": "^8.13.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-vue": "^8.6.0",
+    "postcss": "^8.4.12",
+    "postcss-loader": "^6.2.1",
+    "style-loader": "^3.3.1",
+    "tailwindcss": "^3.0.24",
+    "ts-loader": "^9.2.8",
+    "typescript": "^4.6.3",
+    "vue-loader": "^17.0.0",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2"
+  }
+}

@@ -1,0 +1,11 @@
+# Outputs and processing for scrapers
+output/
+output - Copy/
+result/
+assets/
+game_details.json
+
+# JS stuff
+node_modules/
+/dist/*
+!/dist/index.html
