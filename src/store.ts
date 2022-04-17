@@ -7,6 +7,7 @@ export const store = reactive({
     tags: [],
     description: '',
     title: '',
+    releaseYear: '',
   },
 });
 

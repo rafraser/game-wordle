@@ -1,10 +1,11 @@
 import axios from 'axios';
 
 const GAMES = [
-  '10',
+  '4000',
 ];
 
-const EPOCH = new Date(2022).valueOf();
+// game 0 is April 17th, game 1 is April 18th
+const EPOCH = new Date(2022, 3, 17).valueOf();
 
 export function getGameNumber() {
   return Math.floor((Date.now() - EPOCH) / (24 * 60 * 60 * 1000));
@@ -16,5 +17,12 @@ export function getGameToday() {
 
 export async function getGameDetails(game: string) {
   const response = await axios.get(`/assets/${game}/info.json`);
-  return response.data as any;
+  const { data } = response;
+
+  return {
+    tags: data.tags,
+    description: data.description,
+    title: data.title,
+    releaseYear: data.release_year,
+  } as any;
 }

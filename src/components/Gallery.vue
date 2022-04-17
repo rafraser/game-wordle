@@ -15,7 +15,12 @@
     </div>
     <div v-else class="my-2 h-12"></div>
 
-    <div v-if="imageCount >= 5" class="flex flex-col justify-center text-white text-center text-sm my-2 h-24">
+    <div v-if="imageCount >= 4" class="text-center text-white text-md my-2 h-8">
+        <p>Released in {{ releaseYear }}</p>
+    </div>
+    <div v-else class="my-2 h-12"></div>
+
+    <div v-if="imageCount >= 5" class="flex flex-col justify-start text-white text-center text-sm my-2 h-20">
         <p>{{ description }}</p>
     </div>
     <div v-else class="my-2 h-24"></div>
@@ -57,6 +62,10 @@ export default defineComponent({
 
     description() {
       return store.gameDetails.description;
+    },
+
+    releaseYear() {
+      return store.gameDetails.releaseYear;
     },
 
     tags() {
