@@ -1,30 +1,41 @@
 <template>
     <div class="h-full w-full bg-gray-800">
         <div class="h-full max-w-xl mx-auto flex flex-col px-10 bg-gray-900">
-            <h1 class="text-center text-gray-200">Gamele</h1>
+            <Header/>
 
-            <Gallery v-if="ready"></Gallery>
-            <Guesses v-if="ready"></Guesses>
+            <div v-if="ready" id="game">
+              <GameDetailsDisplay></GameDetailsDisplay>
+              <PreviousGuesses></PreviousGuesses>
+              <GuessInput></GuessInput>
+              <CompletionMessage></CompletionMessage>
+            </div>
 
-            <footer class="mt-auto py-2 text-gray-200 text-center">
-                made with ❤️ by <a class="underline" href="https://robertafraser.com">Robert A Fraser</a>
-            </footer>
+            <Footer/>
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Gallery from './components/Gallery.vue';
-import Guesses from './components/Guesses.vue';
+import GameDetailsDisplay from './components/GameDetailsDisplay.vue';
+import PreviousGuesses from './components/PreviousGuesses.vue';
+import CompletionMessage from './components/CompletionMessage.vue';
+import GuessInput from './components/GuessInput.vue';
+import Header from './components/Header.vue';
+import Footer from './components/Footer.vue';
+
 import { store, loadLocalStorage, saveToLocalStorage } from './store';
 import { getGameToday, getGameDetails } from './games';
 
 export default defineComponent({
   name: 'App',
   components: {
-    Gallery,
-    Guesses,
+    GameDetailsDisplay,
+    PreviousGuesses,
+    GuessInput,
+    CompletionMessage,
+    Header,
+    Footer,
   },
 
   async mounted() {
