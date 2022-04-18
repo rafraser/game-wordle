@@ -15,7 +15,7 @@
             </div>
         </div>
         <input
-            id="typeahead-select" type="text" class="outline-none rounded h-full w-full p-2" placeholder="Guess the game" v-model="input" autocomplete="off"
+            id="typeahead-select" type="text" class="outline-none rounded h-full w-full p-2" placeholder="Guess the game" :value="input" autocomplete="off"
             @input="onInput" @focus="onFocus" @blur="onBlur" @keydown.down.prevent="onArrowDown" @keydown.up.prevent="onArrowUp" @keydown.enter.tab.prevent="selectCurrent"
         >
     </div>
@@ -52,7 +52,8 @@ export default defineComponent({
       this.input = item;
     },
 
-    onInput() {
+    onInput(e: any) {
+      this.input = e.target.value;
       if (this.visible && this.currentSelectionIndex >= this.filteredItems.length) {
         this.currentSelectionIndex = (this.filteredItems.length || 1) - 1;
       }

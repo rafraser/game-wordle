@@ -1,6 +1,6 @@
 <template>
-    <div class="h-full w-full bg-gray-800">
-        <div class="h-full max-w-xl mx-auto flex flex-col px-10 bg-gray-900">
+    <div class="min-h-screen w-screen bg-gray-800">
+        <div class="min-h-full max-w-xl mx-auto flex flex-col px-10 bg-gray-900">
             <Header/>
 
             <div v-if="ready" id="game">
