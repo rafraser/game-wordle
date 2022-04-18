@@ -53,6 +53,7 @@ def process_game(data):
         "description": censor_description(data.get("title"), data.get("description")),
         "release_year": data.get("release_date").split(" ")[-1],
         "tags": data.get("tags")[:5],
+        "steamid": data.get("steamid"),
     }
 
     with open(os.path.join(output_dir, "info.json"), "w") as f:

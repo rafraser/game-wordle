@@ -4,7 +4,7 @@ import os
 import shutil
 from random import shuffle
 
-INPUT_DIR = "output"
+INPUT_DIR = "output - Copy"
 OUTPUT_DIR = "assets"
 
 ready_hashes = []
@@ -21,15 +21,18 @@ def copy_across_if_ready(id):
     if all(os.path.exists(os.path.join(directory, file)) for file in files_to_check):
         hash = obfuscate_id(id)
         new_directory = os.path.join(OUTPUT_DIR, hash)
-        os.makedirs(OUTPUT_DIR, exist_ok=True)
+        os.makedirs(new_directory, exist_ok=True)
 
         for file in files_to_check:
-            shutil.copy(os.path.join(directory, file), new_directory)
+            shutil.copy(os.path.join(directory, file), os.path.join(new_directory, file))
         ready_hashes.append(hash)
 
 
 def process():
-    all_directories = [dir for dir in os.listdir(INPUT_DIR) if os.path.isdir(dir)]
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    print(os.listdir(INPUT_DIR))
+    all_directories = [dir for dir in os.listdir(INPUT_DIR) if os.path.isdir(os.path.join(INPUT_DIR, dir))]
+    print(all_directories)
     for id in all_directories:
         copy_across_if_ready(id)
 

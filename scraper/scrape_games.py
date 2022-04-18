@@ -3,8 +3,29 @@ import json
 import progressbar
 import requests
 
+
 RESULTS_PER_PAGE = 100
-NUMBER_OF_PAGES = 25
+NUMBER_OF_TOP_GAMES_PAGES = 10
+PUBLISHERS_TO_SCRAPE = [
+    "Valve",
+    "2K",
+    "Bethesda",
+    "Ubisoft",
+    "SEGA",
+    "EA",
+    "Chucklefish",
+    "DevolverDigital",
+    "CoffeeStain",
+    "BANDAINAMCO",
+    "XboxGameStudios",
+    "paradoxinteractive",
+    "rockstargames",
+    "tinybuild",
+    "WBGames",
+    "deepsilver",
+    "THQNordic",
+    "505Games"
+]
 
 
 def extract_glance_content(soup):
@@ -45,10 +66,14 @@ def get_info_for_game(steamid):
     resp = requests.get(url)
     soup = BeautifulSoup(resp.content, "html.parser")
 
-    details = extract_glance_content(soup)
-    details["screenshots"] = extract_screenshot_links(soup)
-    details["steamid"] = steamid
-    return details
+    try:
+        details = extract_glance_content(soup)
+        details["screenshots"] = extract_screenshot_links(soup)
+        details["steamid"] = steamid
+        return details
+    except Exception:
+        print("Error!", steamid)
+        return None
 
 
 def get_top_games(page_number):
@@ -68,14 +93,46 @@ def get_top_games(page_number):
         return [game.get("data-ds-appid") for game in games]
 
 
-if __name__ == "__main__":
-    game_ids = []
-    for page in range(NUMBER_OF_PAGES):
-        game_ids += get_top_games(page)
+def get_publisher_games(publisher, page_number=0):
+    """Get SteamIDs for all games by a given publisher
+    """
+    start = page_number * RESULTS_PER_PAGE
+    end = (page_number + 1) * RESULTS_PER_PAGE
+    url = f"https://store.steampowered.com/publisher/{publisher}/ajaxgetfilteredrecommendations/"
+    url += f"?query&start={start}&count={RESULTS_PER_PAGE}"
+    url += "&dynamic_data=&tagids=&sort=newreleases&app_types=game&curations=&reset=false"
 
+    resp = requests.get(url)
+    data = resp.json()
+    if data.get("success") != 1:
+        raise Exception("Got bad response from API!")
+    else:
+        soup = BeautifulSoup(data.get("results_html"), "html.parser")
+        games = soup.find_all(class_="store_capsule")
+        next_page = [] if end >= data.get("total_count") else get_publisher_games(publisher, page_number + 1)
+        return [game.get("data-ds-appid") for game in games] + next_page
+
+
+if __name__ == "__main__":
+    game_ids = set()
+
+    # Get some of the top rated Steam games
+    for page in range(NUMBER_OF_TOP_GAMES_PAGES):
+        game_ids.update(get_top_games(page))
+
+    # Get games by certain publishers
+    for publisher in PUBLISHERS_TO_SCRAPE:
+        game_ids.update(get_publisher_games(publisher))
+
+    # Convert set back to a list
+    game_ids = list(game_ids)
+
+    # Fetch details for all the game IDs we have
     details = []
     for game_id in progressbar.progressbar(game_ids):
-        details.append(get_info_for_game(game_id))
+        info = get_info_for_game(game_id)
+        if info is not None:
+            details.append(info)
 
     with open("game_details.json", "w") as f:
         json.dump(details, f)

@@ -1,3 +1,27 @@
+# Process
+
+We need two lists of video games for this project to work well:
+    - A reasonably long list of game titles, for users to choose from.
+    - A list of curated games with screenshots, to guess.
+
+For this process, we build a very long list of games, scrape all the data, and then do a final round of processing for screenshots and descriptions manually.
+
+## Attempt One
+
+Attempt one: take the top 2,500 games by rating from the Steam Store.
+
+This didn't work too well! Top rated games are done by percentage on Steam, which leads to a lot of really obscure games with dedicated fanbases. Not quite what we're after! Also, we're missing a lot of more controversial games - the entire GTA franchise is missing, for example.
+
+We want a mix of 'hidden gems' & well-known games.
+
+## Attempt Two
+
+Take the top 500/1000/whatever games by rating from the Steam Store, plus all the games by a list of given publishers.
+
+See scrape_publishers.py for details
+
+## Processing Scripts
+
 scrape_games.py
     - Get a list of the top N games from the Steam store
 
