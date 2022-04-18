@@ -30,7 +30,7 @@ def copy_across_if_ready(id):
         ready_hashes.append(hash)
 
 
-def process():
+def process_game_list():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     all_directories = [dir for dir in os.listdir(INPUT_DIR) if os.path.isdir(os.path.join(INPUT_DIR, dir))]
     for id in all_directories:
@@ -58,5 +58,19 @@ def process():
         json.dump(existing_hashes + final_hashes, f)
 
 
+def process_titles():
+    # Simple postprocessing-step: sort, remove duplicates, format nicely so I can sanity check it
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+    titles = []
+    with open(os.path.join(INPUT_DIR, "titles.json")) as f:
+        titles = json.load(f)
+
+    titles = sorted(list(set(titles)))
+    with open(os.path.join(OUTPUT_DIR, "game_titles.json"), "w") as f:
+        json.dump(titles, f, indent=4)
+
+
 if __name__ == "__main__":
-    process()
+    # process_game_list()
+    process_titles()

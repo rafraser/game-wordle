@@ -10,20 +10,20 @@
         </button>
     </div>
 
-    <div v-if="imageCount >= 3" class="text-center text-md my-2 h-12">
+    <div v-if="imageCount >= 3" class="text-center text-md my-2">
         <div v-for="tag in tags" :key="tag.index" class="h-full inline-block border-2 border-green-700 text-white p-2 mx-2 rounded">{{ tag }}</div>
     </div>
-    <div v-else class="my-2 h-12"></div>
+    <div v-else class="my-2"></div>
 
-    <div v-if="imageCount >= 4" class="text-center text-white text-md my-2 h-8">
+    <div v-if="imageCount >= 4" class="text-center text-white text-md my-2">
         <p>Released in {{ releaseYear }}</p>
     </div>
-    <div v-else class="my-2 h-12"></div>
+    <div v-else class="my-2"></div>
 
-    <div v-if="imageCount >= 5" class="flex flex-col justify-start text-white text-center text-sm my-2 h-20">
+    <div v-if="imageCount >= 5" class="flex flex-col justify-start text-white text-center text-sm my-2">
         <p>{{ description }}</p>
     </div>
-    <div v-else class="my-2 h-24"></div>
+    <div v-else class="my-2"></div>
 </template>
 
 <script lang="ts">
