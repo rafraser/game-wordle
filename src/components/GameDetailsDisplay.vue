@@ -11,7 +11,7 @@
     </div>
 
     <div v-if="imageCount >= 3" class="text-center text-md my-2">
-        <div v-for="tag in tags" :key="tag.index" class="h-full inline-block border-2 border-green-700 text-white p-2 mx-2 rounded">{{ tag }}</div>
+        <div v-for="tag in tags" :key="tag.index" class="inline-block border-2 border-green-700 text-white p-2 mx-2 rounded">{{ tag }}</div>
     </div>
     <div v-else class="my-2"></div>
 
