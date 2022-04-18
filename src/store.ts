@@ -8,6 +8,7 @@ export const store = reactive({
     description: '',
     title: '',
     releaseYear: '',
+    steamId: '',
   },
 });
 
