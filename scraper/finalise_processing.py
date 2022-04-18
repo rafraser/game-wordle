@@ -2,10 +2,12 @@ import hashlib
 import json
 import os
 import shutil
+import datetime
 from random import shuffle
 
-INPUT_DIR = "output - Copy"
+INPUT_DIR = "output"
 OUTPUT_DIR = "assets"
+EPOCH = datetime.date(2022, 4, 18)
 
 ready_hashes = []
 
@@ -30,17 +32,30 @@ def copy_across_if_ready(id):
 
 def process():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-    print(os.listdir(INPUT_DIR))
     all_directories = [dir for dir in os.listdir(INPUT_DIR) if os.path.isdir(os.path.join(INPUT_DIR, dir))]
-    print(all_directories)
     for id in all_directories:
         copy_across_if_ready(id)
 
+    # Read in the existing hashes from ready.json
+    # We don't want to change the order for games that have already been played (or are next up)
+    # but everything else from there - fair game!
+    existing_hashes = []
+    try:
+        days = (EPOCH - datetime.date.today()).days + 2
+        with open(os.path.join(OUTPUT_DIR, "ready.json")) as f:
+            existing_hashes = json.load(f)
+            print(days)
+            existing_hashes = existing_hashes[:days]
+    except Exception:
+        print("Could not read existing queue")
+        pass
+
     # Shuffle the hashes so we get a nice random order
-    shuffle(ready_hashes)
+    final_hashes = [h for h in ready_hashes if h not in existing_hashes]
+    shuffle(final_hashes)
 
     with open(os.path.join(OUTPUT_DIR, "ready.json"), "w") as f:
-        json.dump(ready_hashes, f)
+        json.dump(existing_hashes + final_hashes, f)
 
 
 if __name__ == "__main__":
